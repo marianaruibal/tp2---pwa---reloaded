@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <link rel="manifest" href="manifest.json" />
+    <title>Mariana Ballesteros Ruibal, Cátedra PWA</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico"/>
+</head>
+<body>
+
+<header>
+    <h1>Film Search</h1>
+    <div id="online"><span>Online</span></div>
+    <nav id="menu">
+        <ul id="hamburguesa">
+            <li><a href="#menu">Abrir</a></li>
+            <li><a href="#">Cerrar</a></li>
+        </ul>
+        <ul id="barra">
+            <li><a href="#"><span>L</span>Buscador</a></li>
+            <li><a href="#"><span>R</span>Favoritos</a></li>
+            <li><a href="#"><span>M</span>Trailers</a></li>
+        </ul>
+    </nav>
+</header>
+<section class="all">
+    <h2>Busca los datos de las películas o series que querés</h2>
+
+    <form id="search-form">
+
+        <label for="search">Buscá por titulo</label>
+        <input title="pelicula" id="search" type="text" placeholder="Buscar por título" required />
+
+        <button id="send" type="button">Buscar</button>
+    </form>
+
+
+
+</section>
+
+<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
