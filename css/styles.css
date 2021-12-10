@@ -253,12 +253,42 @@ form{
     margin-bottom: 2em;
 }
 
-
-.all, #favorites {
-    padding: 1em;
+.spinner span{
+    visibility: hidden;
 }
 
-.searchMovie, #favorites article{
+.spinner{
+    margin-top: 2em;
+    display: none;
+    border: 6px solid rgba(0, 0, 0, .1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-left-color: #fafafa;
+    margin: auto;
+
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.all, #favorites, #whattosee {
+    padding: 1em;
+}
+.all p, #favorites p, #whattosee p{
+    color: white;
+    font-size: 18px;
+    margin-bottom: 1em;
+    text-align: center;
+}
+.searchMovie, #favorites article, .what{
 
     margin-top: 1em;
     background-color: rgba(239, 239, 239, .6);
@@ -266,13 +296,13 @@ form{
     box-shadow: 2px 2px 4px #292929;
     padding: 2em;
 }
-.searchMovie, #favorites article{
+.searchMovie, #favorites article, .what{
     flex-direction: column;
 }
 
 /* SCORE */
 
-.searchMovie span:first-of-type, #favorites article span:first-of-type{
+.searchMovie span:first-of-type, #favorites article span:first-of-type, .what span:first-of-type{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -293,15 +323,15 @@ form{
     margin-top: -33px;
 }
 
-.searchMovie > div:nth-of-type(2), #favorites article > div:nth-of-type(2){
+.searchMovie > div:nth-of-type(2), #favorites article > div:nth-of-type(2), .what > div:nth-of-type(2){
     text-align: center;
 }
-.searchMovie h3{
+.searchMovie h3, #whattosee h3{
     text-align: center;
     margin: 1em;
 }
 
-.searchMovie ul li, #favorites article ul li{
+.searchMovie ul li, #favorites article ul li, .what ul li{
 
     margin: 1em;
 }
@@ -313,7 +343,7 @@ form{
     display:none;
 }
 
-.searchMovie li, #favorites li{
+.searchMovie li, #favorites li, .what li{
     list-style: none;
 
 }
@@ -350,63 +380,6 @@ form{
         width: 200px;
     }
 
-    /*#online{
-        position: absolute;
-        top: 7px;
-        right: 15px;
-    }*/
-
-   /* #online span{
-        background-image: url("../img/online-icon.png");
-        background-position: left;
-        background-repeat: no-repeat;
-        display: inline-block;
-        width: 80px;
-        height: 58px;
-        text-align: right;
-        font-size: 18px;
-    }*/
-
-    /*#online{
-        position: absolute;
-        top: 10px;
-        right: 1em;
-        border: 3px solid ;
-        border-radius: 10px;
-        width: 40px;
-        height: 40px;
-        line-height: 2em;
-        text-aling: center;
-
-    }
-
-    #online span:first-of-type {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-    }
-
-    .online{
-        border: green;
-
-    }
-    .online span:first-of-type{
-        background-color: green;
-    }
-
-    .offline{
-        border: red;
-        background: red;
-
-    }
-    .offline span:first-of-type{
-        background-color: red;
-    }
-
-    #online span:last-of-type{
-        display: none;
-    }*/
 
     #online{
         top: 10px;
@@ -436,7 +409,7 @@ form{
         height: 30px;
     }
 
-    .searchMovie,  #favorites article{
+    .searchMovie,  #favorites article, .what{
         width: 70%;
         margin: auto;
         margin-bottom: 2em;
@@ -462,7 +435,7 @@ form{
     /* FIN ESTILOS HEADER */
 
 
-    .all{
+    .all, #whattosee, #favorites{
         margin-left: 200px;
     }
 

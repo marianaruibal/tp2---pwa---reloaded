@@ -11,8 +11,7 @@ const home = document.querySelectorAll('#barra li')[0];
 const fav = document.querySelectorAll('#barra li')[1];
 const what = document.querySelectorAll('#barra li')[2];
 
-var buttonAdd;
-const buttonDelete = document.querySelector('.delete');
+const spinner = document.querySelector('.spinner')
 
 const sFavorites = document.getElementById('favorites');
 const pFavorites = document.querySelector('#favorites p');
@@ -36,9 +35,11 @@ button.addEventListener('click', ()=>{
  */
 function searchByTitle(title){
 
+    spinner.style.display = 'block';
+
     fetch(`${URL}?apikey=${API_KEY}&s=${title}&r=json&type=movie`)
         .then(response =>{
-
+            console.log(response.status);
             return response.json();
 
         }).then(responseJson => {
@@ -60,7 +61,9 @@ function searchAllData(movies){
 
         fetch(`${URL}?apikey=${API_KEY}&t=${movies.Search[i].Title}&r=json&plot=full`)
             .then(response =>{
-
+                if(response.status === 200){
+                    spinner.style.display = 'none';
+                }
                 return response.json();
 
             }).then(responseJson => {
@@ -260,10 +263,12 @@ function bringDataBase(){
             }
             //console.log(response);
             //buttonDisplay(response);
+            printWhatToSee(response);
             printFavorites(response);
         });
 
 }
+
 function printFavorites(movies){
 
     movies.forEach(function(movie){
@@ -337,6 +342,75 @@ function printFavorites(movies){
     });
 }
 
+function printWhatToSee(movie){
+
+    let random;
+    if(movie.length!== 0){
+
+            random = Math.floor(Math.random() * (movie.length - 1));
+            console.log(random);
+    }
+
+    console.log(movie[random]);
+
+    let article = document.createElement('article');
+    article.className = 'what ' + movie[random]._id;
+    article.style.display = 'flex';
+
+    sWhattosee.append(article);
+
+    let div = document.createElement('div');
+    article.append(div);
+
+    let spanScore = document.createElement('span');
+    spanScore.innerHTML = movie[random].score;
+
+    div.append(spanScore);
+    div.className = 'score';
+
+    let div1 = document.createElement('div');
+    article.append(div1);
+
+    let img = document.createElement('img');
+    img.src = movie.poster;
+    img.alt = 'Poster';
+    div1.append(img);
+
+    let div2 = document.createElement('div');
+    article.append(div2);
+
+    let h3 = document.createElement('h3');
+    h3.innerHTML = movie[random].title;
+
+    let ul = document.createElement('ul');
+
+    div2.append(h3, ul);
+
+    let sinop = document.createElement('li');
+    sinop.innerHTML = movie[random].plot;
+
+    let act = document.createElement('li');
+    act.innerHTML = movie[random].actors;
+
+    let gen = document.createElement('li');
+    gen.innerHTML = movie[random].genre;
+
+    let dir = document.createElement('li');
+    dir.innerHTML = movie[random].director;
+
+    let year = document.createElement('li');
+    year.innerHTML = movie[random].year;
+
+    let lan = document.createElement('li');
+    lan.innerHTML = movie[random].language;
+
+    let ws = document.createElement('li');
+    ws.innerHTML = movie[random].website;
+
+    ul.append(sinop, act, gen, dir, year, lan, ws);
+
+
+}
 
 fav.addEventListener('click', ()=>{
 
@@ -387,6 +461,13 @@ home.addEventListener('click', ()=>{
 
 what.addEventListener('click', ()=>{
 
+    let articles = document.querySelectorAll('#whattosee article')
+
+    if(articles.length == 0){
+
+        bringDataBase();
+    }
+
     sFavorites.style.display = 'none';
     sSearch.style.display = 'none';
     sWhattosee.style.display = 'block';
@@ -408,3 +489,4 @@ window.addEventListener("online", (event) => {
     online.lastElementChild.innerHTML = "Online"
    // document.getElementById("main-container").classList.remove("d-none");
 });
+
