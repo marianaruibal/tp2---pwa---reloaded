@@ -259,7 +259,7 @@ function bringDataBase(){
 
             }else{
                 pFavorites.style.display = 'none';
-                pWhattosee.innerHTML = 'Nuestra selección para usted es:';
+                pWhattosee.innerHTML = 'Nuestra selección para que vea hoy es:';
             }
             //console.log(response);
             //buttonDisplay(response);
