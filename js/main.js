@@ -372,7 +372,7 @@ function printWhatToSee(movie){
     article.append(div1);
 
     let img = document.createElement('img');
-    img.src = movie.poster;
+    img.src = movie[random].poster;
     img.alt = 'Poster';
     div1.append(img);
 
