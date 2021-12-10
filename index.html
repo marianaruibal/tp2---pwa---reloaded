@@ -11,8 +11,8 @@
 <body>
 
 <header>
-    <h1>Film Search</h1>
-    <div id="online"><span>Online</span></div>
+    <h1>Movie Search</h1>
+    <div id="online" class="online"><span></span><span>Online</span></div>
     <nav id="menu">
         <ul id="hamburguesa">
             <li><a href="#menu">Abrir</a></li>
@@ -21,12 +21,12 @@
         <ul id="barra">
             <li><a href="#"><span>L</span>Buscador</a></li>
             <li><a href="#"><span>R</span>Favoritos</a></li>
-            <li><a href="#"><span>M</span>Trailers</a></li>
+            <li><a href="#"><span>M</span>Qué ver?</a></li>
         </ul>
     </nav>
 </header>
 <section class="all">
-    <h2>Busca los datos de las películas o series que querés</h2>
+    <h2>Busca los datos de las películas que querés ver</h2>
 
     <form id="search-form">
 
@@ -36,10 +36,21 @@
         <button id="send" type="button">Buscar</button>
     </form>
 
+</section>
 
+<section id="favorites">
+    <h2>Favoritos</h2>
+    <p>Películas seleccionadas.</p>
 
 </section>
 
+<section id="whattosee">
+    <h2>Qué ver?</h2>
+    <p>Películas seleccionadas.</p>
+
+</section>
+
+<script src="js/register-sw.js"></script>
 <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 <script src="js/main.js"></script>
 

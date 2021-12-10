@@ -2,38 +2,22 @@ const API_KEY = "5d758a4f";
 const URL = "https://www.omdbapi.com/";
 const URL_POSTER = "http://img.omdbapi.com/";
 
-const move = document.querySelector('.move');
-
-
-
 const button = document.getElementById('send')
 const input = document.getElementById('search');
 
 const sSearch = document.querySelector('.all');
-const h2 = document.querySelector('.searchMovie div h2');
-const img = document.querySelector('.searchMovie div img');
-const aLi = document.querySelectorAll('.searchMovie div ul li');
-const liSinop = aLi[0];
-const liActors = aLi[1];
-const liGenre = aLi[2];
-const liDir = aLi[3];
-const liYear = aLi[4];
-const liLang = aLi[5];
-const liWebSite = aLi[6];
-
-const sScore =document.querySelectorAll('.searchMovie div span')[0];
-const sType =document.querySelectorAll('.searchMovie div span')[1];
 
 const home = document.querySelectorAll('#barra li')[0];
 const fav = document.querySelectorAll('#barra li')[1];
-const trailers = document.querySelectorAll('#barra li')[2];
+const what = document.querySelectorAll('#barra li')[2];
 
-const buttonAdd = document.querySelector('.add');
+var buttonAdd;
 const buttonDelete = document.querySelector('.delete');
 
 const sFavorites = document.getElementById('favorites');
 const pFavorites = document.querySelector('#favorites p');
-
+const sWhattosee = document.getElementById('whattosee');
+const pWhattosee = document.querySelector('#whattosee p');
 
 /**
  * Listen  event 'click' and execute the function with the fetch
@@ -46,6 +30,10 @@ button.addEventListener('click', ()=>{
 
 })
 
+/**
+ * Use method fetch to request to the API the data of a movie by the title.
+ * @param title
+ */
 function searchByTitle(title){
 
     fetch(`${URL}?apikey=${API_KEY}&s=${title}&r=json&type=movie`)
@@ -60,6 +48,10 @@ function searchByTitle(title){
 
 }
 
+/**
+ * Use method fetch to request to the API the full data of a movie by the title.
+ * @param movies
+ */
 function searchAllData(movies){
 
 
@@ -78,9 +70,12 @@ function searchAllData(movies){
     }
 }
 
+/**
+ * Generates HTML elements with the data from the request to the API in the home
+ * @param data
+ */
 function printData(data){
 
-    console.log(data);
         let article = document.createElement('article');
         article.id = data.imdbID;
         article.className = 'searchMovie';
@@ -113,22 +108,20 @@ function printData(data){
 
         let ul = document.createElement('ul');
 
+
+
         let buttonadd = document.createElement('button');
         buttonadd.innerHTML = 'Agregar a favoritos';
         buttonadd.className = 'add';
         buttonadd.type= 'button';
 
-        let buttonDetails = document.createElement('button');
-        buttonDetails.innerHTML = 'Ver detalles';
-        buttonDetails.className = 'detail';
-        buttonDetails.type= 'button';
 
         let buttondel = document.createElement('button');
         buttondel.innerHTML = 'Quitar de favoritos';
         buttondel.className = 'delete';
         buttondel.type= 'button';
 
-        div2.append(h3, ul, buttonDetails, buttonadd, buttondel);
+        div2.append(h3, ul, buttonadd, buttondel);
 
         let sinop = document.createElement('li');
         sinop.innerHTML = 'Sinopsis: '+ data.Plot;
@@ -153,16 +146,12 @@ function printData(data){
 
         ul.append(sinop, act, gen, dir, year, lan, ws);
 
-        //buttonDisplay();
-
-
 
 }
 
 /*INDEXED DB*/
-/*
-var db;
 
+var db;
 
 function init(){
     db = new Dexie("favorite-movies");
@@ -170,31 +159,67 @@ function init(){
     db.version(1).stores({ movies: '_id'});
 
     db.open()
-        .then(refreshView);
+        .then(bringDataBase);
 }
 
-buttonAdd.addEventListener("click", function (event){
-    event.preventDefault();
+document.addEventListener("click", function (e){
 
-    addFavorite();
 
-    buttonDisplay();
+    if(e.target.className === 'add'){
+
+        e.preventDefault();
+
+        addFavorite(e.target.parentElement.parentElement.id);
+
+        e.target.style.display = 'none';
+        e.target.nextElementSibling.style.display = 'block';
+
+        //buttonDisplay();
+    }else if(e.target.className === 'delete'){
+
+        if(e.target.parentNode.parentNode.hasAttribute('id')){
+
+            let id = e.target.parentNode.parentNode.getAttribute("id");
+
+            db.movies.where('_id').equals(id).delete();
+            e.target.style.display = 'none';
+            e.target.previousElementSibling.style.display = 'block';
+
+        }else if(e.target.parentNode.parentNode.className.slice(0,8) == 'favMovie'){
+
+            let id = e.target.parentNode.parentNode.className.slice(-9);
+
+            db.movies.where('_id').equals(id).delete();
+            e.target.parentNode.parentNode.remove();
+        }
+    }
+
 });
 
+var _id, article, h3, img, aLi, liSinop, liActors, liGenre, liDir, liYear, liLang, liWebSite, sScore;
 /**
  * Method to add movies/series to a list of favorites
  * @param {*} event Event 'click' from the buttom 'add to favorites'
  */
+function addFavorite(id){
 
-
-/*
-function addFavorite(){
-
+     _id = id;
+     h3 = document.querySelector('#'+ id + ' div h3');
+     img = document.querySelector('#'+ id + ' div img');
+     aLi = document.querySelectorAll('#'+ id + ' div ul li');
+     liSinop = aLi[0];
+     liActors = aLi[1];
+     liGenre = aLi[2];
+     liDir = aLi[3];
+     liYear = aLi[4];
+     liLang = aLi[5];
+     liWebSite = aLi[6];
+     sScore =document.querySelector('#'+ id + ' span');
 
     db.movies.bulkPut([
         {
-            _id: article.id,
-            title: h2.innerHTML,
+            _id: _id,
+            title: h3.innerHTML,
             poster: img.src,
             plot: liSinop.innerHTML,
             actors: liActors.innerHTML,
@@ -204,14 +229,13 @@ function addFavorite(){
             language: liLang.innerHTML,
             website: liWebSite.innerHTML,
             score: sScore.innerHTML,
-            type: sType.innerHTML,
         },
 
     ]).catch(err => {
 
         alert("Ha ocurrido un error: " + err);
-
     });
+
 
 
 }
@@ -220,19 +244,44 @@ window.onload = function(){
     init();
 }
 
-function refreshView(){
+function bringDataBase(){
     return db.movies.toArray()
-        .then(printMovies);
-}
+        .then(response =>{
 
-function printMovies(movies){
-    pFavorites.style.display= 'none';
+            if(response.length == 0){
+                pFavorites.style.display = 'block';
+                pFavorites.innerHTML = 'No ha seleccionado películas favoritas aún.'
+                pWhattosee.style.display = 'block';
+                pWhattosee.innerHTML = 'Debe seleccionar alguna película favorita.'
+
+            }else{
+                pFavorites.style.display = 'none';
+                pWhattosee.innerHTML = 'Nuestra selección para usted es:';
+            }
+            //console.log(response);
+            //buttonDisplay(response);
+            printFavorites(response);
+        });
+
+}
+function printFavorites(movies){
 
     movies.forEach(function(movie){
 
         let article = document.createElement('article');
-        article.id = movie._id;
+        article.className = 'favMovie ' + movie._id;
+        article.style.display = 'flex';
+
         sFavorites.append(article);
+
+        let div = document.createElement('div');
+        article.append(div);
+
+        let spanScore = document.createElement('span');
+        spanScore.innerHTML = movie.score;
+
+        div.append(spanScore);
+        div.className = 'score';
 
         let div1 = document.createElement('div');
         article.append(div1);
@@ -248,21 +297,20 @@ function printMovies(movies){
         let h3 = document.createElement('h3');
         h3.innerHTML = movie.title;
 
-        let spanScore = document.createElement('span');
-        spanScore.innerHTML = movie.score;
-
-        let spanType = document.createElement('span');
-        spanType.innerHTML = movie.type;
-
         let ul = document.createElement('ul');
 
-        let button = document.createElement('button');
-        button.innerHTML = 'Quitar de favoritos';
-        button.className = 'deleteFav';
-        button.type= 'button';
-        console.log(button);
+        let buttonadd = document.createElement('button');
+        buttonadd.innerHTML = 'Agregar a favoritos';
+        buttonadd.className = 'add';
+        buttonadd.type= 'button';
 
-        div2.append(h3, spanScore, spanType, ul, button);
+
+        let buttondel = document.createElement('button');
+        buttondel.innerHTML = 'Quitar de favoritos';
+        buttondel.className = 'delete';
+        buttondel.type= 'button';
+
+        div2.append(h3, ul, buttonadd, buttondel);
 
         let sinop = document.createElement('li');
         sinop.innerHTML = movie.plot;
@@ -286,90 +334,77 @@ function printMovies(movies){
         ws.innerHTML = movie.website;
 
         ul.append(sinop, act, gen, dir, year, lan, ws);
-
-        /*let postercillo = movie.poster.slice(-3);
-
-        if(postercillo !== 'N/A'){
-
-            let img = document.createElement('img');
-            img.src = movie.poster;
-            img.alt = 'Poster';
-
-            article.insertBefore(img, ul);
-        }
     });
-}*/
-/*
-fav.addEventListener('click', ()=>{
-
-    move.style.display = 'none';
-    article.style.display = 'none';
-    sFavorites.style.display = 'block';
-});
-
-function buttonDisplay(){
-    db.movies.toArray()
-        .then(movies =>{
-            movies.forEach(function(movie){
-                if(article.id === movie._id){
-
-                    buttonAdd.style.display = 'none';
-                    buttonDelete.style.display = 'block';
-                }else{
-                    buttonAdd.style.display = 'block';
-                    buttonDelete.style.display = 'none';                }
-            })
-        });
-
 }
 
-buttonDelete.addEventListener('click', (event)=>{
-    var id;
 
-    if (event.target.parentNode.parentNode.hasAttribute('id')){
-        // Prevengo el comportamiento default del click del boton
-        event.preventDefault();
+fav.addEventListener('click', ()=>{
 
-        // Cual es el ID a borrar?
-        id = event.target.parentNode.parentNode.getAttribute("id");
-
-        db.movies.where('_id').equals(id).delete()
-            .then(refreshView);
-        buttonAdd.style.display = 'block';
-        buttonDelete.style.display = 'none';
-    }
-
+    sSearch.style.display = 'none';
+    sFavorites.style.display = 'block';
+    sWhattosee.style.display = 'none';
 });
+
+/*function buttonDisplay(dataBase){
+
+            dataBase.forEach(function(movie){
+
+                let articles = document.querySelectorAll('.all article');
+
+                let buttonadd, buttondelete;
+
+                for(let i = 0; i < articles.length; i++){
+                    buttonadd = articles[i].lastElementChild.lastElementChild.previousElementSibling;
+                    buttondelete = articles[i].lastElementChild.lastElementChild;
+
+                    if(articles[i].id == movie._id || articles[i].className == movie._id){
+                        console.log('confirmado');
+                        //Button .add
+                        buttonadd.style.display = 'none';
+                        //Button .delete
+                        buttondelete.style.display = 'block';
+                    }else{
+                        console.log('probando');
+                        //Button .add
+                        articles[i].lastElementChild.lastElementChild.previousElementSibling.style.display = 'block';
+                        //Button .delete
+                        articles[i].lastElementChild.lastElementChild.style.display = 'none';
+                    }
+                }
+
+            });
+
+}*/
+
 
 home.addEventListener('click', ()=>{
 
-    if(sFavorites.style.display !== 'none') {
-        //|| trailers.style.display !== 'none')
-        sFavorites.style.display = 'none';
-        //trailers.style.display = 'none';
-    }
-
-    move.style.display = 'block';
+    sFavorites.style.display = 'none';
+    sSearch.style.display = 'block';
+    sWhattosee.style.display = 'none';
 
 })
 
-const divOnline = document.getElementById('online')
-const circleOnline = document.querySelector('#online span:first-of-type');
-const textOnline = document.querySelector('#online span:last-of-type');
+what.addEventListener('click', ()=>{
 
-window.addEventListener('online', event =>{
-    divOnline.className = 'online';
-    textOnline.innerHTML = 'Online';
+    sFavorites.style.display = 'none';
+    sSearch.style.display = 'none';
+    sWhattosee.style.display = 'block';
 
+})
+
+
+window.addEventListener("offline", (event) => {
+    let online = document.getElementById('online')
+        online.className = 'offline';
+        online.lastElementChild.innerHTML = "Offline"
 });
 
-window.addEventListener('offline', event =>{
+// Escucho si el usuario tiene conexion
+window.addEventListener("online", (event) => {
 
-    divOnline.className = 'offline';
-    textOnline.innerHTML = 'Offline';
+    let online = document.getElementById('online')
+    online.className = 'online';
+    online.lastElementChild.innerHTML = "Online"
+   // document.getElementById("main-container").classList.remove("d-none");
 });
-
-if(!navigator.online){
-    divOnline.className = 'online';
-    textOnline.innerHTML = 'Online';
-}*/

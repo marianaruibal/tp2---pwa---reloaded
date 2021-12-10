@@ -29,6 +29,8 @@ header {
     line-height: 4em;
     text-align: center;
     color: white;
+    position: sticky;
+    top: 0px;
 }
 
 nav {
@@ -73,7 +75,7 @@ nav:target #hamburguesa li:last-child {
 #barra {
     width: 100%;
     height: calc(100vh - 4em);
-    position: absolute;
+    position: fixed;
     top: 4em;
     left: -100%;
     background: #2f2f2f;
@@ -82,9 +84,7 @@ nav:target #hamburguesa li:last-child {
 
 #barra li {
     list-style: none;
-    /*margin: 1em;*/
     width: 100%;
-
     height: 50px;
     display: block;
 }
@@ -118,7 +118,7 @@ h1{
     padding-left: 75px;
     font-size: 23px;
 }
-
+/*
 #online{
     position: absolute;
     top: 13px;
@@ -133,6 +133,45 @@ h1{
     height: 30px;
     text-align: right;
     font-size: 0px;
+}*/
+
+#online{
+    position: absolute;
+    top: 10px;
+    right: 1em;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 2em;
+    text-aling: center;
+
+}
+
+#online span:first-of-type {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.online span:first-of-type{
+    background-color: green;
+}
+
+.offline span:first-of-type{
+    background-color: red;
+}
+
+.online{
+    border: 3px solid green;
+}
+
+.offline{
+    border: 3px solid red;
+}
+
+#online span:last-of-type{
+    display: none;
 }
 
 /* FIN ESTILOS HEADER */
@@ -174,7 +213,7 @@ input:focus{
 
 #send, button{
     text-align: center;
-    width: 90%;
+    width: 100%;
     height: 40px;
     color: white;
     border: 1px solid;
@@ -182,6 +221,7 @@ input:focus{
     cursor: pointer;
     font-size: 16px;
     font-weight: lighter;
+    justify-content: center;
 }
 
 #send, .detail{
@@ -192,6 +232,7 @@ input:focus{
 .delete{
     background: linear-gradient(to bottom, #c70016 0%, #810a0a 100%);
     border-color: #4f0606;
+    /*display: none;*/
 }
 
 .add{
@@ -209,7 +250,7 @@ img{
 
 form{
     text-align: center;
-
+    margin-bottom: 2em;
 }
 
 
@@ -225,13 +266,13 @@ form{
     box-shadow: 2px 2px 4px #292929;
     padding: 2em;
 }
-.searchMovie{
+.searchMovie, #favorites article{
     flex-direction: column;
 }
 
 /* SCORE */
 
-.searchMovie span:first-of-type{
+.searchMovie span:first-of-type, #favorites article span:first-of-type{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -252,7 +293,7 @@ form{
     margin-top: -33px;
 }
 
-.searchMovie > div:nth-of-type(2){
+.searchMovie > div:nth-of-type(2), #favorites article > div:nth-of-type(2){
     text-align: center;
 }
 .searchMovie h3{
@@ -260,7 +301,7 @@ form{
     margin: 1em;
 }
 
-.searchMovie ul li{
+.searchMovie ul li, #favorites article ul li{
 
     margin: 1em;
 }
@@ -268,9 +309,29 @@ form{
     display:none;
 }
 
+.searchMovie div .delete{
+    display:none;
+}
+
 .searchMovie li, #favorites li{
     list-style: none;
 
+}
+
+/* FIN SECCION SEARCH */
+
+/* INICIO SECCION FAVORITOS */
+
+#favorites{
+    display: none;
+}
+
+#favorites div .add{
+    display:none;
+}
+
+#whattosee{
+    display: none;
 }
 
 @media screen and (min-width: 673px){
@@ -289,13 +350,13 @@ form{
         width: 200px;
     }
 
-    #online{
+    /*#online{
         position: absolute;
         top: 7px;
         right: 15px;
-    }
+    }*/
 
-    #online span{
+   /* #online span{
         background-image: url("../img/online-icon.png");
         background-position: left;
         background-repeat: no-repeat;
@@ -304,9 +365,83 @@ form{
         height: 58px;
         text-align: right;
         font-size: 18px;
+    }*/
+
+    /*#online{
+        position: absolute;
+        top: 10px;
+        right: 1em;
+        border: 3px solid ;
+        border-radius: 10px;
+        width: 40px;
+        height: 40px;
+        line-height: 2em;
+        text-aling: center;
+
     }
 
-    /* INICIO ESTILOS HEADER */
+    #online span:first-of-type {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    .online{
+        border: green;
+
+    }
+    .online span:first-of-type{
+        background-color: green;
+    }
+
+    .offline{
+        border: red;
+        background: red;
+
+    }
+    .offline span:first-of-type{
+        background-color: red;
+    }
+
+    #online span:last-of-type{
+        display: none;
+    }*/
+
+    #online{
+        top: 10px;
+        right: 2em;
+        width: 100px;
+
+    }
+    #online span:last-of-type{
+        display: inline-block;
+    }
+
+    #online span:first-of-type {
+
+        margin-right: 10px;
+    }
+
+    /* FIN ESTILOS HEADER */
+
+    /* INICIO SECCION BUSQUEDA*/
+
+    #search{
+        width: 50%;
+    }
+
+    #send{
+        width: 100px;
+        height: 30px;
+    }
+
+    .searchMovie,  #favorites article{
+        width: 70%;
+        margin: auto;
+        margin-bottom: 2em;
+
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -325,5 +460,10 @@ form{
     }
 
     /* FIN ESTILOS HEADER */
+
+
+    .all{
+        margin-left: 200px;
+    }
 
 }
